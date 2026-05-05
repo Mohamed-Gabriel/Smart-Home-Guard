@@ -1,38 +1,15 @@
 {
   "expo": {
-    "name": "Smart Home Security",
-    "slug": "mobile",
+    "name": "Smart Home Guard",
+    "slug": "smart-home-guard",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/images/icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+    "extra": {
+      "eas": {
+        "projectId": "8c608548-cbf6-4332-bc0b-4469c577632d"
+      }
     },
-    "ios": {
-      "supportsTablet": false
-    },
-    "android": {},
-    "web": {
-      "favicon": "./assets/images/icon.png"
-    },
-    "plugins": [
-      [
-        "expo-router",
-        {
-          "origin": "https://replit.com/"
-        }
-      ],
-      "expo-font",
-      "expo-web-browser"
-    ],
-    "experiments": {
-      "typedRoutes": true,
-      "reactCompiler": true
+    "android": {
+      "package": "com.mg.smarthomeguard"
     }
   }
 }
