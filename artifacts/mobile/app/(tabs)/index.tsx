@@ -1,5 +1,6 @@
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import {
   Animated,
@@ -13,6 +14,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useAuth } from "@/context/AuthContext";
 import { useSecurity } from "@/context/SecurityContext";
 import { useColors } from "@/hooks/useColors";
 
@@ -86,6 +88,7 @@ export default function DashboardScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const { devices, threats, protectionActive, threatsBlockedToday, toggleProtection } = useSecurity();
+  const { logout } = useAuth();
 
   const connectedDevices = devices.filter(d => !d.blocked).length;
   const blockedDevices = devices.filter(d => d.blocked).length;
@@ -102,6 +105,11 @@ export default function DashboardScreen() {
     { label: "Active", value: activeThreats.toString(), icon: "alert-triangle" as const, color: activeThreats > 0 ? colors.destructive : colors.success },
   ];
 
+  const handleLogout = () => {
+    logout();
+    router.replace("/login");
+  };
+
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
@@ -113,7 +121,12 @@ export default function DashboardScreen() {
           <Text style={[styles.greeting, { color: colors.mutedForeground }]}>Network Status</Text>
           <Text style={[styles.deviceName, { color: colors.foreground }]}>Home Security Gateway</Text>
         </View>
-        <View style={[styles.statusDot, { backgroundColor: protectionActive ? colors.success : colors.destructive }]} />
+        <View style={styles.headerRight}>
+          <View style={[styles.statusDot, { backgroundColor: protectionActive ? colors.success : colors.destructive }]} />
+          <TouchableOpacity onPress={handleLogout} hitSlop={8} style={[styles.logoutBtn, { borderColor: colors.border }]}>
+            <Feather name="log-out" size={16} color={colors.mutedForeground} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.shieldSection}>
@@ -212,7 +225,9 @@ const styles = StyleSheet.create({
   },
   greeting: { fontSize: 13, fontFamily: "Inter_400Regular", marginBottom: 2 },
   deviceName: { fontSize: 20, fontFamily: "Inter_700Bold" },
+  headerRight: { flexDirection: "row", alignItems: "center", gap: 10 },
   statusDot: { width: 12, height: 12, borderRadius: 6 },
+  logoutBtn: { padding: 7, borderRadius: 9, borderWidth: 1 },
   shieldSection: { alignItems: "center", marginBottom: 32, paddingHorizontal: 20 },
   shieldContainer: { width: 160, height: 160, alignItems: "center", justifyContent: "center", marginBottom: 16 },
   shieldInner: { width: 120, height: 120, borderRadius: 60, overflow: "hidden" },
